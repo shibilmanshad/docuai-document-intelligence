@@ -15,7 +15,7 @@ export default function App() {
         <div className="header-content">
           <div className="logo">
             <span className="logo-icon">⬡</span>
-            <span className="logo-text">DocuAI</span>
+            <span className="logo-text">AI Document Intelligence</span>
           </div>
           <nav className="header-nav">
             <button

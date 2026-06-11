@@ -173,7 +173,7 @@ cd docuai-document-intelligence
 ### Backend Setup
 
 ```bash
-cd backend
+
 
 python -m venv venv
 
