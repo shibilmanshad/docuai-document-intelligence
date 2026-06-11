@@ -1,6 +1,6 @@
-# DocuAI — AI-Powered Document Intelligence Platform with RAG and Generative UI
+# AI-Powered Document Intelligence Platform with RAG and Generative UI
 
-DocuAI is a full-stack AI-powered Document Intelligence Platform that combines Retrieval-Augmented Generation (RAG) with Generative UI. Users can upload PDFs, DOCX files, Excel spreadsheets, and images, then interact with documents through natural language to dynamically generate answers, dashboards, structured tables, and workflow diagrams.
+It is an full-stack AI-powered Document Intelligence Platform that combines Retrieval-Augmented Generation (RAG) with Generative UI. Users can upload PDFs, DOCX files, Excel spreadsheets, and images, then interact with documents through natural language to dynamically generate answers, dashboards, structured tables, and workflow diagrams.
 
 **Fully local and free.** Uses Ollama + Llama 3 for LLM inference and local Sentence Transformers embeddings. No OpenAI API key required.
 
