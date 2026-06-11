@@ -1,210 +1,310 @@
-# DocuAI — AI-Powered Document Intelligence Platform
+# DocuAI — AI-Powered Document Intelligence Platform with RAG and Generative UI
 
-A full-stack RAG application that ingests PDFs, DOCX, Excel, and images, then answers
-questions with generative UI — auto-generating dashboards, data tables, or workflow
-diagrams based on query intent.
+DocuAI is a full-stack AI-powered Document Intelligence Platform that combines Retrieval-Augmented Generation (RAG) with Generative UI. Users can upload PDFs, DOCX files, Excel spreadsheets, and images, then interact with documents through natural language to dynamically generate answers, dashboards, structured tables, and workflow diagrams.
 
-**Fully local & free.** Uses Ollama + Llama 3 for LLM/vision and local sentence-transformers for embeddings. No API keys required.
+**Fully local and free.** Uses Ollama + Llama 3 for LLM inference and local Sentence Transformers embeddings. No OpenAI API key required.
+
+---
+
+## AI Features
+
+* Retrieval-Augmented Generation (RAG)
+* Generative UI
+* Semantic Search
+* OCR for scanned documents and images
+* Multi-format document ingestion
+* Dashboard Generation
+* Workflow Generation
+* Table Generation
+* Conversational Document Q&A
+* Source Citations
+
+---
 
 ## Tech Stack
 
-| Component | Technology |
-|-----------|-----------|
-| OCR | pytesseract |
-| Embeddings | sentence-transformers/all-MiniLM-L6-v2 |
-| Vector DB | ChromaDB |
-| RAG | LangChain |
-| Backend | FastAPI |
-| Frontend | React + Vite |
-| LLM | Ollama + Llama 3 |
-| Workflow Generation | Llama 3 |
-| Dashboard Generation | Llama 3 |
-| Table Generation | Llama 3 |
+| Component            | Technology                             |
+| -------------------- | -------------------------------------- |
+| OCR                  | pytesseract                            |
+| Embeddings           | sentence-transformers/all-MiniLM-L6-v2 |
+| Vector Database      | ChromaDB                               |
+| RAG Pipeline         | LangChain                              |
+| Backend API          | FastAPI                                |
+| Frontend             | React + Vite                           |
+| LLM                  | Ollama + Llama 3                       |
+| Generative UI        | Dynamic React Widgets                  |
+| Dashboard Generation | Llama 3                                |
+| Workflow Generation  | Llama 3                                |
+| Table Generation     | Llama 3                                |
+
+---
 
 ## Architecture
 
-```
+```text
 Documents (PDF, DOCX, XLSX, Images)
          │
    ┌─────▼────────────────────────────┐
    │   Document Parser (ingest.py)    │
-   │   PyMuPDF · OCR · camelot        │
-   │   Llama 3 Vision (images)        │
+   │   PDF · OCR · Table Extraction   │
    └─────┬────────────────────────────┘
          │
    ┌─────▼──────────────────┐
-   │ RecursiveTextSplitter  │  chunking
+   │ RecursiveTextSplitter  │
+   │     Chunking Engine    │
    └─────┬──────────────────┘
          │
    ┌─────▼──────────────────────────┐
-   │  HuggingFace Embeddings        │  vectors (local, no API cost)
-   │  all-MiniLM-L6-v2             │
+   │ HuggingFace Embeddings         │
+   │ all-MiniLM-L6-v2              │
    └─────┬──────────────────────────┘
          │
    ┌─────▼──────────────────┐
-   │  ChromaDB (persisted)  │  storage
+   │ ChromaDB Vector Store  │
    └─────┬──────────────────┘
          │
-   ┌─────▼──────────────────────────────────┐
-   │  Intent Router (rag.py)                │
-   │  QA · Dashboard · Table · Workflow     │
-   └─────┬──────────────────────────────────┘
+   ┌─────▼──────────────────────────┐
+   │ Intent Router (rag.py)         │
+   │ QA · Dashboard · Table         │
+   │ Workflow Generation            │
+   └─────┬──────────────────────────┘
          │
-   ┌─────▼──────────────────────────────────┐
-   │  FastAPI (app.py)                      │
-   │  POST /upload · POST /query            │
-   └─────┬──────────────────────────────────┘
+   ┌─────▼──────────────────────────┐
+   │ Ollama + Llama 3              │
+   └─────┬──────────────────────────┘
          │
-   ┌─────▼──────────────────────────────────┐
-   │  React Frontend                        │
-   │  ChatInterface → DashboardWidget       │
-   │                → WorkflowWidget        │
-   │                → TableWidget           │
-   │                → SourceCitations       │
-   └────────────────────────────────────────┘
+   ┌─────▼──────────────────────────┐
+   │ FastAPI Backend                │
+   │ /upload · /query · /documents  │
+   └─────┬──────────────────────────┘
+         │
+   ┌─────▼──────────────────────────┐
+   │ React Frontend                 │
+   │ Generative UI                  │
+   │ DashboardWidget                │
+   │ WorkflowWidget                 │
+   │ TableWidget                    │
+   └────────────────────────────────┘
 ```
+
+---
+
+## Generative UI
+
+Unlike traditional chatbots, DocuAI dynamically changes the interface based on user intent.
+
+Examples:
+
+**Question Answering**
+
+```text
+What is this document about?
+```
+
+→ Returns a contextual answer.
+
+**Dashboard Generation**
+
+```text
+Give me a dashboard of key metrics.
+```
+
+→ Generates KPI cards and charts.
+
+**Table Generation**
+
+```text
+Extract the data as a table.
+```
+
+→ Produces structured tabular data.
+
+**Workflow Generation**
+
+```text
+Show the process as a workflow diagram.
+```
+
+→ Generates workflow nodes and connections.
+
+---
+
+## Screenshots
+
+### Document Upload
+
+![Upload](docs/upload.png)
+
+### Generative Dashboard
+
+![Dashboard](docs/dashboard.png)
+
+### Workflow Diagram
+
+![Workflow](docs/workflow.png)
+
+### Structured Table Extraction
+
+![Table](docs/table.png)
+
+---
 
 ## Quick Start
 
 ### Prerequisites
 
-Install [Ollama](https://ollama.com) and pull Llama 3:
+Install Ollama and download Llama 3:
 
 ```bash
 ollama pull llama3
 ```
 
-### 1. Clone and configure
+---
+
+### Clone Repository
 
 ```bash
-git clone https://github.com/yourname/docuai
-cd docuai
-cp .env.example backend/.env
-# No API key needed — Ollama runs locally
+git clone https://github.com/shibilmanshad/docuai-document-intelligence.git
+cd docuai-document-intelligence
 ```
 
-### 2. Run with Docker
+---
+
+### Backend Setup
 
 ```bash
-docker-compose up --build
+cd backend
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+pip install -r ../requirements.txt
+
+uvicorn app:app --reload
 ```
 
-Docker Compose will start Ollama, the FastAPI backend, and the React frontend automatically.
-Then open http://localhost:3000
+Backend runs on:
 
-### 3. Or run manually
+```text
+http://localhost:8000
+```
 
-**Ollama** (in a separate terminal)
+---
+
+### Frontend Setup
+
+Open a second terminal:
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Frontend runs on:
+
+```text
+http://localhost:3000
+```
+
+---
+
+### Start Ollama
+
+Open another terminal:
+
 ```bash
 ollama serve
 ```
 
-**Backend**
-```bash
-cd backend
-pip install -r ../requirements.txt
-uvicorn app:app --reload
+---
+
+## API Endpoints
+
+### Upload Document
+
+```http
+POST /upload
 ```
 
-**Frontend**
-```bash
-cd frontend
-npm install
-npm run dev
+Upload PDF, DOCX, XLSX, or image files.
+
+---
+
+### Query Documents
+
+```http
+POST /query
 ```
 
-## API Reference
+Example:
 
-### POST /upload
-Upload a document file.
-
-```bash
-curl -X POST http://localhost:8000/upload \
-  -F "file=@report.pdf"
-```
-
-Response:
 ```json
 {
-  "filename": "report.pdf",
-  "chunks_created": 42,
-  "tables_extracted": 3,
-  "images_described": 2,
-  "status": "ingested"
+  "question": "What is the total revenue?"
 }
 ```
 
-### POST /query
-Ask a question about ingested documents.
+---
 
-```bash
-curl -X POST http://localhost:8000/query \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What is the total revenue?"}'
+### List Documents
+
+```http
+GET /documents
 ```
 
-Response (dashboard intent):
-```json
-{
-  "intent": "dashboard",
-  "data": {
-    "type": "dashboard",
-    "title": "Revenue Overview",
-    "cards": [
-      {"title": "Revenue", "value": "$1.2M", "change": "+15%", "trend": "up"}
-    ],
-    "chart": {
-      "type": "bar",
-      "labels": ["Q1", "Q2", "Q3", "Q4"],
-      "datasets": [{"label": "Revenue", "data": [280000, 310000, 295000, 315000]}]
-    }
-  },
-  "sources": [
-    {"filename": "annual_report.pdf", "page": 22, "type": "text"}
-  ]
-}
+---
+
+### Delete Document
+
+```http
+DELETE /documents/{filename}
 ```
 
-## Configuration
+---
 
-Ollama settings can be overridden via environment variables (or `backend/.env`):
+## Implemented Features
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `OLLAMA_URL` | `http://localhost:11434` | Ollama server URL |
-| `OLLAMA_MODEL` | `llama3` | Model to use for all LLM calls |
+* ✅ Document Upload
+* ✅ PDF Processing
+* ✅ DOCX Processing
+* ✅ Excel Processing
+* ✅ OCR Extraction
+* ✅ Local Embeddings
+* ✅ ChromaDB Vector Search
+* ✅ Retrieval-Augmented Generation (RAG)
+* ✅ Generative Dashboard UI
+* ✅ Workflow Diagram Generation
+* ✅ Structured Table Generation
+* ✅ Source Citations
+* ✅ Conversational Memory
+* ✅ FastAPI Backend
+* ✅ React Frontend
+* ✅ Ollama Integration
+* ✅ Fully Local Deployment
 
-To swap to a different model (e.g. Mistral):
-```bash
-ollama pull mistral
-# then set OLLAMA_MODEL=mistral in backend/.env
-```
+---
 
-## Phases Implemented
+## Future Improvements
 
-- ✅ **Phase 1** — Basic RAG (ChromaDB + LangChain + Llama 3)
-- ✅ **Phase 2** — Multi-modal (OCR, table extraction, Llama 3 vision)
-- ✅ **Phase 3** — Generative Dashboard UI
-- ✅ **Phase 4** — Workflow / SOP diagram generation
-- ✅ **Phase 5** — Intent router (QA / Dashboard / Table / Workflow)
-- ✅ **Phase 6** — Source citations, chat history, Docker deployment
+* Interactive React Flow workflows
+* Multi-document comparison
+* User authentication
+* Document summarization
+* Advanced analytics dashboards
+* Hybrid retrieval (BM25 + Vector Search)
+* Multi-user workspace support
 
-## Extending
+---
 
-**Add React Flow for interactive workflows:**
-```bash
-cd frontend && npm install reactflow
-```
-Then replace `WorkflowWidget.jsx` SVG renderer with `<ReactFlow nodes={...} edges={...} />`.
+## Author
 
-**Swap embeddings to a higher-quality local model:**
-```python
-# In rag.py and ingest.py, change EMBED_MODEL:
-EMBED_MODEL = "sentence-transformers/all-mpnet-base-v2"  # higher quality, slower
-```
+**Shibil Manshad**
 
-**Add authentication:**
-```bash
-pip install python-jose[cryptography] passlib
-```
-See FastAPI's JWT auth docs.
+AI & Data Science Graduate | Generative AI | RAG | AI Automation | Data Analytics
+
+GitHub: https://github.com/shibilmanshad
